@@ -27,7 +27,7 @@
 
             <summary-modal v-if="showingSummary" v-on:close-btn-click="onCloseBtnClick" v-bind:title="summaryTitle" v-bind:summary="summaryText"></summary-modal>
             
-            <add-movie-modal v-if="showingAddMovieForm" v-bind:movie-name="addMovieTitle" v-bind:movie-year="addMovieYear" v-bind:movie-poster="addMoviePoster" v-on:close-btn-click="onCloseBtnClick"></add-movie-modal>
+            <add-movie-modal v-if="showingAddMovieForm" v-on:close-btn-click="onCloseBtnClick" v-on:form-add-btn-click="onFormAddClick"></add-movie-modal>
         
         </div>
         

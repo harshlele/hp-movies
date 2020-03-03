@@ -25,7 +25,13 @@ Vue.component('movie-item',{
 });
 
 Vue.component('add-movie-modal',{
-    props:["movieName","movieYear","moviePoster"],
+    data:function(){
+        return {
+            title:"",
+            year:"",
+            poster:""
+        }
+    },
     template:`
         <!-- The Modal -->
         <div id="myModal" class="modal">
@@ -37,18 +43,26 @@ Vue.component('add-movie-modal',{
                 <h2>Add Movie</h2>
             </div>
             <div class="modal-body">
-                <input v-model="movieName" placeholder="Movie Title"/>
-                <br>
-                <input v-model="movieYear" placeholder="Year of Release"/>
-                <br>
-                <input v-model="moviePoster" placeholder="Poster URL"/>
-                <br>
-                <input type="submit" value="Add">
+                <form onsubmit="return false;">
+                    <label for="title">Movie Title: {{title}}</label><br>
+                    <input type="text" id="title" name="title" v-model="title" placeholder="Movie Title"><br>
+                    <label for="year">Year of Release: {{year}}</label><br>
+                    <input type="number" id="year" name="year" v-model="year" placeholder="Year of Release"><br>
+                    <label for="poster">Poster URL: {{poster}}</label><br>
+                    <input type="url" id="poster" name="poster" v-model="poster" placeholder="Poster URL"><br>
+                    <input type="submit" value="Add" v-on:click="onAddBtnClick">
+                </form>
             </div>
             </div>
         
         </div>
-    `
+    `,
+    
+    methods:{
+        onAddBtnClick:function(event){
+            this.$emit('form-add-btn-click',this.$data);
+        }
+    }
 });
 
 Vue.component('summary-modal',{
@@ -92,10 +106,7 @@ var app = new Vue({
         showingSummary: false,
         summaryTitle: "",
         summaryText: "",
-        showingAddMovieForm: false,
-        addMovieTitle: "",
-        addMovieYear: "",
-        addMoviePoster: ""
+        showingAddMovieForm: false
     },
 
     methods:{
@@ -119,7 +130,7 @@ var app = new Vue({
                             year: element.Year,
                             id: element.imdbID,
                             summary:""
-                        })
+                        });
             
                         if(app.movies.length == results.totalResults){
                             app.allLoaded = true;
@@ -176,6 +187,18 @@ var app = new Vue({
 
         onAddMovieClick: function(event){
             app.showingAddMovieForm = true;
+
+        },
+
+        onFormAddClick: function(data){
+            app.movies.push({
+                title: data.title,
+                year: data.year,
+                poster: data.poster,
+                id:"",
+                summary:""
+            })
+            app.showingAddMovieForm = false;    
         }
     },
 
