@@ -8,28 +8,29 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         
         <link rel="stylesheet" href="styles.css">
-    
     </head>
     <body>
         
         <div class="container">
-            <title-text v-bind:title="title"></title-text>
+            <title-text v-bind:title="title" v-bind:num-results="totalResults"></title-text>
             <hr>
             
             
             <div v-for="movie in movies">
-                <movie-item v-bind:title="movie.title" v-bind:year="movie.year" v-bind:poster="movie.poster"/>
+                <movie-item v-bind:title="movie.title" v-bind:year="movie.year" v-bind:poster="movie.poster" v-on:summary-btn-click="onItemClick(movie)" v-bind:show-summary="movie.showSummary"/>
             </div>
+
 
             <div class="footer">
                 <btn-loadmore v-if="(!allLoaded) && (movies.length > 0)" v-on:click.native="onLoadMoreClick"/>
             </div>
+
+            <summary-modal v-if="showingSummary" v-on:close-btn-click="onSummaryCloseBtnClick" v-bind:title="summaryTitle" v-bind:summary="summaryText"></summary-modal>
             
-
         </div>
-
+        
+        
         <script src="main.js"></script>
-
     </body>
 
 
