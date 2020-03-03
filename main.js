@@ -24,6 +24,33 @@ Vue.component('movie-item',{
             `
 });
 
+Vue.component('add-movie-modal',{
+    props:["movieName","movieYear","moviePoster"],
+    template:`
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" v-on:click="$emit('close-btn-click')">&times;</span>
+                <h2>Add Movie</h2>
+            </div>
+            <div class="modal-body">
+                <input v-model="movieName" placeholder="Movie Title"/>
+                <br>
+                <input v-model="movieYear" placeholder="Year of Release"/>
+                <br>
+                <input v-model="moviePoster" placeholder="Poster URL"/>
+                <br>
+                <input type="submit" value="Add">
+            </div>
+            </div>
+        
+        </div>
+    `
+});
+
 Vue.component('summary-modal',{
     props:["title","summary"],
     template:`
@@ -49,6 +76,11 @@ Vue.component('btn-loadmore',{
     template: `<div id="btn">Load More</div>`
 });
 
+Vue.component('btn-add-movie',{
+    template: `<div id="btn">Add Movie</div>`
+});
+
+
 var app = new Vue({
     el: ".container",
     data:{
@@ -59,7 +91,11 @@ var app = new Vue({
         totalResults: 0,
         showingSummary: false,
         summaryTitle: "",
-        summaryText: ""
+        summaryText: "",
+        showingAddMovieForm: false,
+        addMovieTitle: "",
+        addMovieYear: "",
+        addMoviePoster: ""
     },
 
     methods:{
@@ -129,10 +165,17 @@ var app = new Vue({
             
         },
 
-        onSummaryCloseBtnClick: function(){
+        onCloseBtnClick: function(){
             app.showingSummary = false;
             app.summaryText = "";
             app.summaryTitle = "";
+
+            app.showingAddMovieForm = false;
+            
+        },
+
+        onAddMovieClick: function(event){
+            app.showingAddMovieForm = true;
         }
     },
 
